@@ -56,5 +56,58 @@ namespace WebApiExample.Controllers
             .Take(pagination)
             .ToArrayAsync();
         }
+
+        [Route("CreateUser")]
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] User user)
+        {
+            var newUser = new User
+            {
+                Name = user.Name,
+                Points = user.Points
+            };
+
+            await _dbContext.Users.AddAsync(newUser);
+            _dbContext.SaveChanges();
+
+            return StatusCode(200);
+        }
+
+        [Route("UpdateUserPoints")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserPoints([FromBody] User user)
+        {
+            var person = _dbContext.Users.FirstOrDefault(p => p.Id == user.Id);
+
+            if (person != null)
+            {
+                person.Points = user.Points;
+                await _dbContext.SaveChangesAsync();
+
+            }
+
+            return StatusCode(200);
+        }
+
+        [Route("CreateProduct")]
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody] Items item)
+        {
+            var newProduct = new Product
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Price = item.Price,
+                Description = item.Description,
+                Points = item.Points
+            };
+
+            await _dbContext.Products.AddAsync(newProduct);
+            _dbContext.SaveChanges();
+
+            return StatusCode(200);
+        }
+
+
     }
 }
