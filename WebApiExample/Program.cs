@@ -54,5 +54,11 @@ internal class Program
             dbContext.Products.AddRange(ProductsSeedData.Products);
             dbContext.SaveChanges();
         }
+
+        if (!dbContext.Users.Any())
+        {
+            dbContext.Users.AddRange(UsersSeedData.Users);
+            dbContext.SaveChanges();
+        }
     }
 }

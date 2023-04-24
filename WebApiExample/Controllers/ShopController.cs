@@ -46,5 +46,15 @@ namespace WebApiExample.Controllers
 
             return output;
         }
+
+        [Route("GetUsers")]
+        [HttpGet]
+        public async Task<User[]> GetUsers([FromQuery] int pagination = 10)
+        {
+            return await _dbContext.Users
+            .OrderBy(p => p.Points)
+            .Take(pagination)
+            .ToArrayAsync();
+        }
     }
 }
