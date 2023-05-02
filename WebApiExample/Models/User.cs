@@ -1,8 +1,14 @@
-﻿namespace WebApiExample.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApiExample.Models
 {
     public class User
     {
+        [Key]
+        [Required]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public double Points { get; set; }
     }

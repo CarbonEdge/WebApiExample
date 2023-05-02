@@ -1,7 +1,12 @@
-﻿namespace WebApiExample.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApiExample.Models
 {
     public class Product
     {
+        [Key]
+        [Required]
         public int Id { get; set; }
         public string? Name { get; set; }
         public double Price { get; set; }

@@ -18,8 +18,8 @@ namespace WebApiExample.Controllers
 
         }
 
-        [Route("GetProducts")]
         [HttpGet]
+        [Route("GetProducts")]
         public async Task<ProductDto> GetProducts([FromQuery]int pagination = 10)
         {
             var data = await _dbContext.Products
@@ -47,8 +47,8 @@ namespace WebApiExample.Controllers
             return output;
         }
 
-        [Route("GetUsers")]
         [HttpGet]
+        [Route("GetUsers")]
         public async Task<User[]> GetUsers([FromQuery] int pagination = 10)
         {
             return await _dbContext.Users
@@ -57,24 +57,28 @@ namespace WebApiExample.Controllers
             .ToArrayAsync();
         }
 
-        [Route("CreateUser")]
         [HttpPost]
+        [Route("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            var newUser = new User
+            if (!_dbContext.Users.Any(p => p.Name == user.Name))
             {
-                Name = user.Name,
-                Points = user.Points
-            };
+                var newUser = new User
+                {
+                    Name = user.Name,
+                    Points = user.Points
+                };
 
-            await _dbContext.Users.AddAsync(newUser);
-            _dbContext.SaveChanges();
+                await _dbContext.Users.AddAsync(newUser);
+                _dbContext.SaveChanges();
+            }
+            
 
             return StatusCode(200);
         }
 
-        [Route("UpdateUserPoints")]
         [HttpPost]
+        [Route("UpdateUserPoints")]
         public async Task<IActionResult> UpdateUserPoints([FromBody] User user)
         {
             var person = _dbContext.Users.FirstOrDefault(p => p.Id == user.Id);
@@ -89,8 +93,8 @@ namespace WebApiExample.Controllers
             return StatusCode(200);
         }
 
-        [Route("CreateProduct")]
         [HttpPost]
+        [Route("CreateProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] Items item)
         {
             var newProduct = new Product
