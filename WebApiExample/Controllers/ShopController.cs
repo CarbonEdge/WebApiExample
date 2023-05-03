@@ -48,6 +48,22 @@ namespace WebApiExample.Controllers
         }
 
         [HttpGet]
+        [Route("UserExists")]
+        public async Task<User> UserExists([FromQuery] string userName)
+        {
+            var client = await _dbContext.Users.FirstOrDefaultAsync(prop => prop.Name == userName);
+
+            if (client == null)
+            {
+                return new User();
+            }
+            else
+            {
+                return client;
+            }
+        }
+
+        [HttpGet]
         [Route("GetUsers")]
         public async Task<User[]> GetUsers([FromQuery] int pagination = 10)
         {
@@ -99,7 +115,6 @@ namespace WebApiExample.Controllers
         {
             var newProduct = new Product
             {
-                Id = item.Id,
                 Name = item.Name,
                 Price = item.Price,
                 Description = item.Description,

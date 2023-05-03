@@ -22,6 +22,17 @@ internal class Program
         builder.Services.AddDbContext<WebApiExample.Models.MyDbContext>(options =>
             options.UseNpgsql(connection));
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins("http://localhost:4200")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+        });
+
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -36,6 +47,8 @@ internal class Program
                 var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
                 SeedData(dbContext);
             }
+
+            app.UseCors();
         }
 
         app.UseHttpsRedirection();
